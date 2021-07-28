@@ -1,0 +1,17 @@
+image: python:latest
+
+stages:
+ - test
+
+bandit:
+  stage: test
+  script:
+    - pip install -r requirements.txt
+    - pip install bandit
+    - 'bandit -r app.py'
+  artifacts:
+    paths: [bandit-output.json]
+    when: always
+  allow_failure: true
+  
+  

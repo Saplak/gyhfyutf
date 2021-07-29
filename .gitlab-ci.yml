@@ -1,11 +1,10 @@
-image: python:latest
+image: docker:latest
 
 stages:
  - test
 
 before_script:
-    - apt-get update && apt-get install -y docker.io
-    - docker version
+    - apt-get update && apt-get install python3
 
 bandit:
   stage: test

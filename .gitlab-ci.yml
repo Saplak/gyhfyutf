@@ -1,13 +1,18 @@
 image: python:latest
 
 stages:
- - test
+ - Automated Code Review
+ - Sensitive Information Scan
+ - Source Composition Analysis
+ - Static Application Security Testing
+ - Dynamic Application Security Testing 
+#  - test
 
 services:
   - docker:dind
   
 bandit:
-  stage: test
+  stage: Static Application Security Testing
   script:
     - pip install -r requirements.txt
     - pip install bandit
@@ -18,31 +23,31 @@ bandit:
 
 devskim:
     image: docker:latest
-    stage: test
+    stage: Automated Code Review
     
     script:
-      - docker run --volume `pwd`:/code coderpatros/devskim:latest analyze /code
+      - docker run --volume `pwd`:/code coderpatros/devskim:latest analyze /app.py
       - python3 -m pytest --junitxml=tests.xml app.py
     artifacts:
       paths: [tests.xml]
 
 trufflehog:
-   image: docker:latest
-   stage: test
+   stage: Sensitive Information Scan
 
    script:
-    - docker run --rm -v "$(pwd):/proj" dxa4481/trufflehog file:///proj
+    - pip install truffleHog
+    - truffleHog --regex --entropy=False .
 
-taint:
-   image: docker:latest
-   stage: test
+dependencycheck:
+   image: owasp/dependency-check
+   stage: Source Composition Analysis
 
    script:
-    - docker run --rm --volume \$(pwd) vickyrajagopal/python-taint-docker pyt .
+    - /usr/share/dependency-check/bin/dependency-check.sh --project . --out . --scan . --enableExperimental --failOnCVSS 7
 
 owasp:
    image: docker:latest
-   stage: test
+   stage: Dynamic Application Security Testing
 
    script:
      - echo 'hello!'

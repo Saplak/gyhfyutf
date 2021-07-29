@@ -6,38 +6,40 @@ stages:
 services:
   - docker:dind
   
-# before_script:
-#   - apt-get update && apt-get install python3
-#   - apt-get install pip
-
 bandit:
   stage: test
   script:
     - pip install -r requirements.txt
     - pip install bandit
-    - 'bandit -r app.py'
-  # artifacts:
-  #   paths: [bandit-output.json]
+    - 'bandit -r app.py  --json > bandit-output.json '
+  artifacts:
+    paths: [bandit-output.json]
   #   when: always
   # allow_failure: true
 
-# devskim:
-#     stage: test
-#     script:
-#       - docker run --volume `pwd`:/code coderpatros/devskim:latest analyze /code
-#       - python3 -m pytest --junitxml=tests.xml app.py
-#     artifacts:
-#       paths: [tests.xml]
+devskim:
+    image: docker:latest
+    stage: test
+    
+    script:
+      - docker run --volume `pwd`:/code coderpatros/devskim:latest analyze /code
+      - python3 -m pytest --junitxml=tests.xml app.py
+    artifacts:
+      paths: [tests.xml]
 
-# trufflehog:
-#    stage: test
-#    script:
-#     - docker run --rm -v "$(pwd):/proj" dxa4481/trufflehog file:///proj
+trufflehog:
+   image: docker:latest
+   stage: test
 
-# taint:
-#    stage: test
-#    script:
-#     - docker run --rm --volume \$(pwd) vickyrajagopal/python-taint-docker pyt .
+   script:
+    - docker run --rm -v "$(pwd):/proj" dxa4481/trufflehog file:///proj
+
+taint:
+   image: docker:latest
+   stage: test
+
+   script:
+    - docker run --rm --volume \$(pwd) vickyrajagopal/python-taint-docker pyt .
 
 owasp:
    image: docker:latest
@@ -46,3 +48,4 @@ owasp:
    script:
      - echo 'hello!'
      - docker run -t owasp/zap2docker-stable zap-baseline.py -t http://56d6c3d7cfd6.ngrok.io
+   allow_failure: true

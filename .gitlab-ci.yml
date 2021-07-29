@@ -1,3 +1,4 @@
+image: python:latest
 
 stages:
  - test
@@ -39,7 +40,9 @@ bandit:
 #     - docker run --rm --volume \$(pwd) vickyrajagopal/python-taint-docker pyt .
 
 owasp:
+   image: docker:latest
    stage: test
+
    script:
      - echo 'hello!'
      - docker run -t owasp/zap2docker-stable zap-baseline.py -t http://56d6c3d7cfd6.ngrok.io

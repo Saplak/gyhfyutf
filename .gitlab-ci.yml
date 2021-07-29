@@ -3,6 +3,10 @@ image: python:latest
 stages:
  - test
 
+before_script:
+    - apt-get update && apt-get install -y docker.io
+    - docker version
+
 bandit:
   stage: test
   script:
@@ -36,5 +40,4 @@ owasp:
    stage: test
    script:
      - echo 'hello!'
-     - 'docker push michelleamesquita/my_docker_flask:latest'
-    #  - docker run -t owasp/zap2docker-stable zap-baseline.py -t http://c66b893f03b9.ngrok.io/
+     - docker run -t owasp/zap2docker-stable zap-baseline.py -t http://c66b893f03b9.ngrok.io/

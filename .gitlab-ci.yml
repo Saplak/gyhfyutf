@@ -47,8 +47,7 @@ trufflehog:
    stage: Sensitive Information Scan
 
    script:
-     - pip install truffleHog
-     - truffleHog --regex --entropy=False .
+     - docker run --rm -v "$(pwd):/proj" dxa4481/trufflehog .
    allow_failure: true
 
 dependencycheck:

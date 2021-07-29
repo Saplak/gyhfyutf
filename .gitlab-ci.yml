@@ -2,6 +2,12 @@
 stages:
  - test
 
+services:
+  - docker:dind
+  
+before_script:
+  - apt-get update && apt-get install python3
+  - apt-get install pip
 
 bandit:
   stage: test

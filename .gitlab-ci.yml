@@ -19,6 +19,7 @@ bandit:
     - 'bandit -r app.py  > bandit-output.txt '
   artifacts:
     paths: [bandit-output.txt]
+  allow_failure: true
 
 snyk:
   stage: Static Application Security Testing
@@ -31,6 +32,7 @@ snyk:
     when: always
     paths:
     - snyk-results.json
+  allow_failure: true
 
 
 devskim:
@@ -39,6 +41,7 @@ devskim:
     
     script:
       - docker run michelleamesquita/devskim analyze app.py
+    allow_failure: true
 
 trufflehog:
    stage: Sensitive Information Scan
@@ -46,6 +49,7 @@ trufflehog:
    script:
     - pip install truffleHog
     - truffleHog --regex --entropy=False .
+   allow_failure: true
 
 dependencycheck:
    image: owasp/dependency-check
@@ -53,6 +57,7 @@ dependencycheck:
 
    script:
     - /usr/share/dependency-check/bin/dependency-check.sh --project . --out . --scan . --enableExperimental --failOnCVSS 7
+   allow_failure: true
 
 owasp:
    image: docker:latest

@@ -56,8 +56,10 @@ dependencycheck:
    stage: Source Composition Analysis
 
    script:
-    - /usr/share/dependency-check/bin/dependency-check.sh --project . --out . --scan . --enableExperimental --failOnCVSS 7
+    - docker run -v $(pwd):/src -v $(pwd):/usr/share/dependency-check/data -v $(pwd)/odc-reports:/report owasp/dependency-check --scan . --format "JSON" --out . --failOnCVSS 7
    allow_failure: true
+   artifacts:
+    paths: [dependency-check-report.json]
 
 owasp:
    image: docker:latest

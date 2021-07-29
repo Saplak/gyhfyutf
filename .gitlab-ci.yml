@@ -32,7 +32,6 @@ bandit:
 #    script:
 #     - docker run --rm --volume \$(pwd) vickyrajagopal/python-taint-docker pyt .
 
-''
 owasp:
    stage: test
    script:

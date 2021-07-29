@@ -13,5 +13,28 @@ bandit:
     paths: [bandit-output.json]
     when: always
   allow_failure: true
-  
-  
+
+# devskim:
+#     stage: test
+#     script:
+#       - docker run --volume `pwd`:/code coderpatros/devskim:latest analyze /code
+#       - python3 -m pytest --junitxml=tests.xml app.py
+#     artifacts:
+#       paths: [tests.xml]
+
+# trufflehog:
+#    stage: test
+#    script:
+#     - docker run --rm -v "$(pwd):/proj" dxa4481/trufflehog file:///proj
+
+# taint:
+#    stage: test
+#    script:
+#     - docker run --rm --volume \$(pwd) vickyrajagopal/python-taint-docker pyt .
+
+
+owasp:
+   stage: test
+   script:
+    - echo 'hello!'
+    - docker run -t owasp/zap2docker-stable zap-baseline.py -t http://c66b893f03b9.ngrok.io/

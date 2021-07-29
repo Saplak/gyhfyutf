@@ -34,12 +34,11 @@ snyk:
 
 
 devskim:
-    image: docker:latest
+    image: mcr.microsoft.com/dotnet/core/sdk:2.2
     stage: Automated Code Review
     
     script:
-      - docker run --volume `pwd`:/code coderpatros/devskim:latest analyze app.py
-      - python3 -m pytest --junitxml=tests.xml app.py
+      - devskim analyze app.py
     artifacts:
       paths: [tests.xml]
 

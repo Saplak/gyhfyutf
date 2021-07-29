@@ -47,8 +47,8 @@ trufflehog:
    stage: Sensitive Information Scan
 
    script:
-    - pip install truffleHog
-    - truffleHog --regex --entropy=False .
+     - pip install truffleHog
+     - truffleHog --regex --entropy=False .
    allow_failure: true
 
 dependencycheck:
@@ -56,7 +56,7 @@ dependencycheck:
    stage: Source Composition Analysis
 
    script:
-    - docker run -v $(pwd):/src -v $(pwd):/usr/share/dependency-check/data -v $(pwd)/odc-reports:/report owasp/dependency-check --scan . --format "JSON" --out . --failOnCVSS 7
+     - docker run -v $(pwd):/src -v $(pwd):/usr/share/dependency-check/data -v $(pwd)/odc-reports:/report owasp/dependency-check --scan . --format "JSON" --out . --failOnCVSS 7
    allow_failure: true
    artifacts:
     paths: [dependency-check-report.json]

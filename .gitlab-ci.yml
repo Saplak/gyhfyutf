@@ -60,5 +60,5 @@ owasp:
 
    script:
      - echo 'hello!'
-     - docker run -t owasp/zap2docker-stable zap-baseline.py -t http://56d6c3d7cfd6.ngrok.io
+     - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL}
    allow_failure: true

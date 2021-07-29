@@ -44,6 +44,7 @@ devskim:
     allow_failure: true
 
 trufflehog:
+   image: docker:latest
    stage: Sensitive Information Scan
 
    script:

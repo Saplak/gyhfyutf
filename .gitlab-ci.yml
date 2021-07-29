@@ -51,15 +51,16 @@ trufflehog:
      - docker run --rm -v "$(pwd):/proj" dxa4481/trufflehog .
    allow_failure: true
 
-dependencycheck:
-   image: owasp/dependency-check
-   stage: Source Composition Analysis
 
+dependencycheck:
+   stage: Source Composition Analysis
    script:
-     - docker run -v $(pwd):/src -v $(pwd):/usr/share/dependency-check/data -v $(pwd)/odc-reports:/report owasp/dependency-check --scan . --format "JSON" --out . --failOnCVSS 7
-   allow_failure: true
+     - pip install safety
+     - safety check -r requirements.txt --json > safety-results.json 
    artifacts:
-    paths: [dependency-check-report.json]
+     paths: [safety-results.json]
+     when: always 
+
 
 owasp:
    image: docker:latest

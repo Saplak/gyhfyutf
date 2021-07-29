@@ -34,13 +34,11 @@ snyk:
 
 
 devskim:
-    image: mcr.microsoft.com/dotnet/core/sdk:2.2
+    image: docker:latest
     stage: Automated Code Review
     
     script:
-      - devskim analyze app.py
-    artifacts:
-      paths: [tests.xml]
+      - docker run coderpatros/devskim:latest analyze .
 
 trufflehog:
    stage: Sensitive Information Scan

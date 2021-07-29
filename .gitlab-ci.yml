@@ -35,5 +35,5 @@ bandit:
 owasp:
    stage: test
    script:
-    - echo 'hello!'
-    - 'docker run -t owasp/zap2docker-stable zap-baseline.py -t http://c66b893f03b9.ngrok.io/'
+     - echo 'hello!'
+     - docker run -t owasp/zap2docker-stable zap-baseline.py -t http://c66b893f03b9.ngrok.io/

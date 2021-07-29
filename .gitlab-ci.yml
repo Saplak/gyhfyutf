@@ -9,10 +9,10 @@ bandit:
     - pip install -r requirements.txt
     - pip install bandit
     - 'bandit -r app.py'
-  artifacts:
-    paths: [bandit-output.json]
-    when: always
-  allow_failure: true
+  # artifacts:
+  #   paths: [bandit-output.json]
+  #   when: always
+  # allow_failure: true
 
 # devskim:
 #     stage: test
@@ -36,4 +36,5 @@ owasp:
    stage: test
    script:
      - echo 'hello!'
-     - docker run -t owasp/zap2docker-stable zap-baseline.py -t http://c66b893f03b9.ngrok.io/
+     - 'docker push michelleamesquita/my_docker_flask:latest'
+    #  - docker run -t owasp/zap2docker-stable zap-baseline.py -t http://c66b893f03b9.ngrok.io/

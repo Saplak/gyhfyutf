@@ -38,7 +38,7 @@ devskim:
     stage: Automated Code Review
     
     script:
-      - docker run coderpatros/devskim:latest analyze .
+      - docker run michelleamesquita/devskim:latest analyze app.py
 
 trufflehog:
    stage: Sensitive Information Scan

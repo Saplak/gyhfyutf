@@ -19,7 +19,19 @@ bandit:
     - 'bandit -r app.py  > bandit-output.txt '
   artifacts:
     paths: [bandit-output.txt]
-  
+
+snyk:
+  stage: Static Application Security Testing
+  script:
+    - pip install -r requirements.txt
+    - wget https://github.com/snyk/snyk/releases/download/v1.204.0/snyk-linux
+    - mv snyk-linux snyk && chmod +x snyk
+    - ./snyk test --json > snyk-results.json
+  artifacts:
+    when: always
+    paths:
+    - snyk-results.json
+
 
 devskim:
     image: docker:latest

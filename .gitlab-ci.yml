@@ -16,7 +16,7 @@ bandit:
   script:
     - pip install -r requirements.txt
     - pip install bandit
-    - 'bandit -r app.py  > bandit-output.txt '
+    - 'bandit -r app.py'
   artifacts:
     paths: [bandit-output.txt]
   allow_failure: true

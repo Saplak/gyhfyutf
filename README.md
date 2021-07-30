@@ -26,6 +26,15 @@ Here, I have the webapp that is validating for my secure pipeline. So, I've a gi
 
 Also, I've a specfic folder, to create a Docker image for use Devskim. Devskim is very important to automated code review.
 
+## To run
+
+To run the app, you just have to write that:
+`pip3 intall -r requirements.txt `
+`python3 app.py`
+
+You can create a image with Docker file too, using this:
+`docker build -t myapp .`
+
 ## DevOps
 
 Here, I have a specfic folder - **test**- to put my test case, using Selenium and I also created a image for this environment to test in my local pipeline.

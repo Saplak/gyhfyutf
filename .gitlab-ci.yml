@@ -6,7 +6,7 @@ stages:
  - Source Composition Analysis
  - Static Application Security Testing
  - Dynamic Application Security Testing 
-#  - test
+
 
 services:
   - docker:dind

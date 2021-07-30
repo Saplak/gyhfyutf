@@ -29,11 +29,14 @@ Also, I've a specfic folder, to create a Docker image for use Devskim. Devskim i
 ## To run
 
 To run the app, you just have to write that:
-`pip3 intall -r requirements.txt `
-`python3 app.py`
+
+```pip3 intall -r requirements.txt ```
+
+```python3 app.py```
 
 You can create a image with Docker file too, using this:
-`docker build -t myapp .`
+
+```docker build -t myapp .```
 
 ## DevOps
 

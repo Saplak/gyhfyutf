@@ -91,7 +91,7 @@ deploy:
      - mkdir -p ~/.ssh
      - chmod 700 ~/.ssh
      - echo "Deploy project on server"
-     - ssh  $DEPLOY_HOST
+    #  - ssh  $DEPLOY_HOST
     #  - apt-get update
     #  - apt-get install sshpass -y    
     #  - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."

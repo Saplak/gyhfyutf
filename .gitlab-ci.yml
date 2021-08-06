@@ -1,76 +1,76 @@
 image: python:latest
 
 stages:
- - Automated Code Review
- - Sensitive Information Scan
- - Source Composition Analysis
- - Static Application Security Testing
- - Dynamic Application Security Testing 
+#  - Automated Code Review
+#  - Sensitive Information Scan
+#  - Source Composition Analysis
+#  - Static Application Security Testing
+#  - Dynamic Application Security Testing 
  - Deploy
 
 
-services:
-  - docker:dind 
+# services:
+#   - docker:dind 
   
-bandit:
-  stage: Static Application Security Testing
-  script:
-    - pip install -r requirements.txt
-    - pip install bandit
-    - 'bandit -r app.py'
-  artifacts:
-    paths: [bandit-output.txt]
-  allow_failure: true
+# bandit:
+#   stage: Static Application Security Testing
+#   script:
+#     - pip install -r requirements.txt
+#     - pip install bandit
+#     - 'bandit -r app.py'
+#   artifacts:
+#     paths: [bandit-output.txt]
+#   allow_failure: true
 
-snyk:
-  stage: Static Application Security Testing
-  script:
-    - pip install -r requirements.txt
-    - wget https://github.com/snyk/snyk/releases/download/v1.204.0/snyk-linux
-    - mv snyk-linux snyk && chmod +x snyk
-    - ./snyk test --json > snyk-results.json
-  artifacts:
-    when: always
-    paths:
-    - snyk-results.json
-  allow_failure: true
+# snyk:
+#   stage: Static Application Security Testing
+#   script:
+#     - pip install -r requirements.txt
+#     - wget https://github.com/snyk/snyk/releases/download/v1.204.0/snyk-linux
+#     - mv snyk-linux snyk && chmod +x snyk
+#     - ./snyk test --json > snyk-results.json
+#   artifacts:
+#     when: always
+#     paths:
+#     - snyk-results.json
+#   allow_failure: true
 
 
-devskim:
-    image: docker:latest
-    stage: Automated Code Review
+# devskim:
+#     image: docker:latest
+#     stage: Automated Code Review
     
-    script:
-      - docker run michelleamesquita/devskim analyze app.py
-    allow_failure: true
+#     script:
+#       - docker run michelleamesquita/devskim analyze app.py
+#     allow_failure: true
 
-trufflehog:
-   image: docker:latest
-   stage: Sensitive Information Scan
+# trufflehog:
+#    image: docker:latest
+#    stage: Sensitive Information Scan
 
-   script:
-     - docker run --rm -v "$(pwd):/proj" dxa4481/trufflehog .
-   allow_failure: true
-
-
-dependencycheck:
-   stage: Source Composition Analysis
-   script:
-     - pip install safety
-     - safety check -r requirements.txt --json > safety-results.json 
-   artifacts:
-     paths: [safety-results.json]
-     when: always 
+#    script:
+#      - docker run --rm -v "$(pwd):/proj" dxa4481/trufflehog .
+#    allow_failure: true
 
 
-owasp:
-   image: docker:latest
-   stage: Dynamic Application Security Testing
+# dependencycheck:
+#    stage: Source Composition Analysis
+#    script:
+#      - pip install safety
+#      - safety check -r requirements.txt --json > safety-results.json 
+#    artifacts:
+#      paths: [safety-results.json]
+#      when: always 
 
-   script:
-     - echo 'hello!'
-     - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL2}
-   allow_failure: true
+
+# owasp:
+#    image: docker:latest
+#    stage: Dynamic Application Security Testing
+
+#    script:
+#      - echo 'hello!'
+#      - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL2}
+#    allow_failure: true
 
 
 deploy:
@@ -78,26 +78,40 @@ deploy:
   image: ubuntu:latest
   stage: Deploy
 
-  before_script:
-    - apk update && apk add openssh-client bash
+  # before_script:
+  #   - apk update && apk add openssh-client bash
 
   script:
      - 'echo "Building docker!"'
-     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-     - apt-get -y install zip unzip
-     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-     - apt-get -y install zip unzip
+    #  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    #  - apt-get -y install zip unzip
+    #  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    #  - apt-get -y install zip unzip
+    #  - eval $(ssh-agent -s)
+    #  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    #  - mkdir -p ~/.ssh
+    #  - chmod 700 ~/.ssh
+    #  - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+    #  - chmod 644 ~/.ssh/known_hosts
+
+     - apt-get update -qq
+     # Setup SSH deploy keys
+     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
      - eval $(ssh-agent -s)
-     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+     - ssh-add <(echo "$SSH_PRIVATE_KEY")
      - mkdir -p ~/.ssh
-     - chmod 700 ~/.ssh
-     - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-     - chmod 644 ~/.ssh/known_hosts
+     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  
+  
      - echo "Deploy project on server"
-     - scp  -o StrictHostKeyChecking=no $DEPLOY_HOST "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
-     - scp  -o StrictHostKeyChecking=no $DEPLOY_HOST "docker stop $(docker ps -a -q  --filter ancestor=${CI_REGISTRY_USER}/simpleapp:latest)"
-     - scp  -o StrictHostKeyChecking=no $DEPLOY_HOST "docker run APP_PORT=$APP_PORT -p $APP_PORT:$APP_PORT ${CI_REGISTRY_USER}/simpleapp:latest"
-    #  - ssh  $DEPLOY_HOST
+     - ssh $DEPLOY_HOST "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
+     - ssh $DEPLOY_HOST "docker stop $(docker ps -a -q  --filter ancestor=${CI_REGISTRY_USER}/simpleapp:latest)"
+     - ssh $DEPLOY_HOST "docker run APP_PORT=$APP_PORT -p $APP_PORT:$APP_PORT ${CI_REGISTRY_USER}/simpleapp:latest"
+
+    #  - scp  -o StrictHostKeyChecking=no $DEPLOY_HOST "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
+    #  - scp  -o StrictHostKeyChecking=no $DEPLOY_HOST "docker stop $(docker ps -a -q  --filter ancestor=${CI_REGISTRY_USER}/simpleapp:latest)"
+    #  - scp  -o StrictHostKeyChecking=no $DEPLOY_HOST "docker run APP_PORT=$APP_PORT -p $APP_PORT:$APP_PORT ${CI_REGISTRY_USER}/simpleapp:latest"
+    # #  - ssh  $DEPLOY_HOST
     #  - apt-get update
     #  - apt-get install sshpass -y    
     #  - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."

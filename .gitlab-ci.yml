@@ -83,7 +83,7 @@ owasp:
 
 deploy:
   # image: docker:latest
-  image: alpine:latest
+  image: ubuntu:latest
   stage: Deploy
 
   script:

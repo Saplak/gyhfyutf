@@ -76,6 +76,7 @@ owasp:
 
 build:
    image: docker:latest
+   stage: Build
 
    script:
       - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."

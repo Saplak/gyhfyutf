@@ -105,7 +105,7 @@ deploy:
   
      - echo "Deploy project on server"
      - ssh $DEPLOY_HOST "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
-     - ssh $DEPLOY_HOST "docker stop $(docker ps -a -q  --filter ancestor=${CI_REGISTRY_USER}/simpleapp:latest)"
+     - ssh $DEPLOY_HOST "docker stop ${CI_REGISTRY_USER}/simpleapp:latest || true"
      - ssh $DEPLOY_HOST "docker run APP_PORT=$APP_PORT -p $APP_PORT:$APP_PORT ${CI_REGISTRY_USER}/simpleapp:latest"
 
     #  - scp  -o StrictHostKeyChecking=no $DEPLOY_HOST "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"

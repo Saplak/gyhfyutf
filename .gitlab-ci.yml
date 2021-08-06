@@ -82,15 +82,18 @@ before_script:
   - chmod 700 ~/.ssh
 
 deploy:
-  image: docker:latest
-  # image: ubuntu:latest
+  #image: docker:latest
+  image: ubuntu:latest
   stage: Deploy
 
   script:
      - 'echo "Building docker!"'
-     - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
-     - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
-     - "docker push ${CI_REGISTRY_USER}/simpleapp:latest"
+     - apt-get update
+     - apt-get install sshpass -y
+     - sshpass -p "${PASSWD}" ssh -T ${DEPLOY_HOST}
+    #  - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
+    #  - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
+    #  - "docker push ${CI_REGISTRY_USER}/simpleapp:latest"
      - 'echo "Deploy docker!"'
      - "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
      - "docker stop $(docker ps -a -q  --filter ancestor=${CI_REGISTRY_USER}/simpleapp:latest)"

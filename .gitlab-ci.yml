@@ -85,13 +85,14 @@ deploy:
      - 'echo "Building docker!"'
      - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
      - apt-get -y install zip unzip
-     - echo "$SSH_PRIVATE_KEY" |  tr -d '\r' > ~/.ssh/id_rsa
-     - cat ~/.ssh/id_rsa
-     - chmod 700 ~/.ssh/id_rsa
-     - eval "$(ssh-agent -s)"
-     - ssh-add ~/.ssh/id_rsa
-     - ssh-keyscan -H 'gitlab.com' >> ~/.ssh/known_hosts
+     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+     - apt-get -y install zip unzip
+     - eval $(ssh-agent -s)
+     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+     - mkdir -p ~/.ssh
+     - chmod 700 ~/.ssh
      - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+     - chmod 644 ~/.ssh/known_hosts
      - echo "Deploy project on server"
      - scp  -o StrictHostKeyChecking=no $DEPLOY_HOST "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
      - scp  -o StrictHostKeyChecking=no $DEPLOY_HOST "docker stop $(docker ps -a -q  --filter ancestor=${CI_REGISTRY_USER}/simpleapp:latest)"

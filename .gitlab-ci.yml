@@ -88,6 +88,7 @@ deploy:
 
   script:
      - 'echo "Building docker!"'
+     - apt-get update
      - apt-get install sshpass -y
      - sshpass -p $PASSWD ssh $DEPLOY_HOST "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
      - sshpass -p $PASSWD ssh $DEPLOY_HOST "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"

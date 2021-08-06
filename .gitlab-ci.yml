@@ -91,9 +91,9 @@ deploy:
      - apt-get update
      - apt-get install sshpass -y
      - sshpass -p "${PASSWD}" ssh ${DEPLOY_HOST}
-     - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
-     - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
-     - "docker push ${CI_REGISTRY_USER}/simpleapp:latest"
+    #  - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
+    #  - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
+    #  - "docker push ${CI_REGISTRY_USER}/simpleapp:latest"
      - 'echo "Deploy docker!"'
      - "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
      - "docker stop $(docker ps -a -q  --filter ancestor=${CI_REGISTRY_USER}/simpleapp:latest)"

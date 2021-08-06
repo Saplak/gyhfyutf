@@ -78,14 +78,18 @@ deploy:
   image: ubuntu:latest
   stage: Deploy
 
+  before_script:
+    - apk update && apk add openssh-client bash
+
   script:
      - 'echo "Building docker!"'
-     - apk update && apk add openssh-client bash
      - eval $(ssh-agent -s)
      - RELEASEDATE=$(date +%s)
      - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
      - mkdir -p ~/.ssh
      - chmod 700 ~/.ssh
+     - ssh-keyscan example.com >> ~/.ssh/known_hosts
+     - chmod 644 ~/.ssh/known_hosts
      - echo "Deploy project on server"
      - ssh  $DEPLOY_HOST
     #  - apt-get update

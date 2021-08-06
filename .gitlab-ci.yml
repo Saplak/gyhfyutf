@@ -10,7 +10,7 @@ stages:
 
 
 services:
-  - docker:dind
+  - docker:dind 
   
 bandit:
   stage: Static Application Security Testing

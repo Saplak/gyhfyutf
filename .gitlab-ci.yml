@@ -72,14 +72,6 @@ owasp:
      - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL2}
    allow_failure: true
 
-# before_script:
-#   - echo "Before script..."
-#   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-#   - apt-get -y install zip unzip
-#   - eval $(ssh-agent -s)
-#   - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-#   - mkdir -p ~/.ssh
-#   - chmod 700 ~/.ssh
 
 deploy:
   #image: docker:latest
@@ -94,8 +86,6 @@ deploy:
      - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
      - mkdir -p ~/.ssh
      - chmod 700 ~/.ssh
-     - ssh-keyscan example.com >> ~/.ssh/known_hosts
-     - chmod 644 ~/.ssh/known_hosts
      - echo "Deploy project on server"
      - ssh  $DEPLOY_HOST
     #  - apt-get update

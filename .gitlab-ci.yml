@@ -72,26 +72,28 @@ owasp:
      - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL2}
    allow_failure: true
 
-before_script:
-  - echo "Before script..."
-  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-  - apt-get -y install zip unzip
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
+# before_script:
+#   - echo "Before script..."
+#   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+#   - apt-get -y install zip unzip
+#   - eval $(ssh-agent -s)
+#   - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+#   - mkdir -p ~/.ssh
+#   - chmod 700 ~/.ssh
 
 deploy:
-  image: docker:latest
+  # image: docker:latest
+  image: alpine:latest
   stage: Deploy
 
   script:
      - 'echo "Building docker!"'
-     - 'docker build -t ${CI_REGISTRY_USER}/simpleapp:latest .'
-     - 'docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}'
-     - 'docker push ${CI_REGISTRY_USER}/simpleapp:latest'
+     - apt-get install sshpass
+     - sshpass -p $PASSWD ssh $DEPLOY_HOST "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
+     - sshpass -p $PASSWD ssh $DEPLOY_HOST "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
+     - sshpass -p $PASSWD ssh $DEPLOY_HOST "docker push ${CI_REGISTRY_USER}/simpleapp:latest"
      - 'echo "Deploy docker!"'
-     - ssh $DEPLOY_HOST "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
-     - ssh $DEPLOY_HOST "docker stop $(docker ps -a -q  --filter ancestor=${CI_REGISTRY_USER}/simpleapp:latest)"
-     - ssh $DEPLOY_HOST "docker run APP_PORT=$APP_PORT -p $APP_PORT:$APP_PORT ${CI_REGISTRY_USER}/simpleapp:latest"
+     - sshpass -p $PASSWD ssh $DEPLOY_HOST "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
+     - sshpass -p $PASSWD ssh $DEPLOY_HOST "docker stop $(docker ps -a -q  --filter ancestor=${CI_REGISTRY_USER}/simpleapp:latest)"
+     - sshpass -p $PASSWD ssh $DEPLOY_HOST "docker run APP_PORT=$APP_PORT -p $APP_PORT:$APP_PORT ${CI_REGISTRY_USER}/simpleapp:latest"
 

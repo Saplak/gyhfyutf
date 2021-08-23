@@ -74,14 +74,14 @@ owasp:
    allow_failure: true
 
 
-build:
-   image: docker:latest
-   stage: Build
+# build:
+#    image: docker:latest
+#    stage: Build
 
-   script:
-      - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
-      - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
-      - "docker push ${CI_REGISTRY_USER}/simpleapp:latest"
+#    script:
+#       - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
+#       - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
+#       - "docker push ${CI_REGISTRY_USER}/simpleapp:latest"
 
 deploy:
   image: ubuntu:latest

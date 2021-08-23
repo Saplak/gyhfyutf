@@ -1,0 +1,37 @@
+sudo wget -O /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
+--2021-08-23 01:04:43--  https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
+
+chmod +x /usr/local/bin/gitlab-runner
+
+apt-get install gitlab-runner
+
+gitlab-runner start
+
+Enter the GitLab instance URL (for example, https://gitlab.com/):
+https://gitlab.com
+Enter the registration token:
+token from gitlab
+Enter a description for the runner:
+[docker-ubuntu-s-1vcpu-2gb-sfo3-01]: deploy
+Enter tags for the runner (comma-separated):
+build, deploy, prod, test
+Registering runner... succeeded                     runner=xYAfbxL1
+Enter an executor: docker, parallels, shell, ssh, virtualbox, docker+machine, docker-ssh+machine, custom, kubernetes, docker-ssh:
+docker
+Enter the default Docker image (for example, ruby:2.6):
+alpine:latest
+
+
+ssh-keygen -o
+
+nano ~/.ssh/authorized_keys //copy id_rsa.pub
+
+chmod +X ~/.ssh/id_rsa
+
+chmod +X ~/.ssh/id_rsa.pub 
+
+chmod +X ~/.ssh/authorized_keys 
+
+cat ~/.ssh/id_rsa //use in gitlab settings >ci/cd > variables
+
+docker docker run --rm -d --name app3 -p 8080:8080 michelleamesquita/simpleapp:latest

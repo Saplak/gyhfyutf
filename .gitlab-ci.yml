@@ -1,7 +1,7 @@
 image: python:latest
 
 stages:
- - Build
+#  - Build
 #  - Automated Code Review
 #  - Sensitive Information Scan
 #  - Source Composition Analysis

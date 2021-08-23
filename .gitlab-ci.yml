@@ -2,10 +2,10 @@ image: python:latest
 
 stages:
  - Build
- - Automated Code Review
- - Sensitive Information Scan
- - Source Composition Analysis
- - Static Application Security Testing
+#  - Automated Code Review
+#  - Sensitive Information Scan
+#  - Source Composition Analysis
+#  - Static Application Security Testing
  - Dynamic Application Security Testing 
  - Deploy
 
@@ -13,55 +13,55 @@ stages:
 services:
   - docker:dind 
   
-bandit:
-  stage: Static Application Security Testing
-  script:
-    - pip install -r requirements.txt
-    - pip install bandit
-    - 'bandit -r app.py'
-  artifacts:
-    paths: [bandit-output.txt]
-  allow_failure: true
+# bandit:
+#   stage: Static Application Security Testing
+#   script:
+#     - pip install -r requirements.txt
+#     - pip install bandit
+#     - 'bandit -r app.py'
+#   artifacts:
+#     paths: [bandit-output.txt]
+#   allow_failure: true
 
-snyk:
-  stage: Static Application Security Testing
-  script:
-    - pip install -r requirements.txt
-    - wget https://github.com/snyk/snyk/releases/download/v1.204.0/snyk-linux
-    - mv snyk-linux snyk && chmod +x snyk
-    - ./snyk test --json > snyk-results.json
-  artifacts:
-    when: always
-    paths:
-    - snyk-results.json
-  allow_failure: true
+# snyk:
+#   stage: Static Application Security Testing
+#   script:
+#     - pip install -r requirements.txt
+#     - wget https://github.com/snyk/snyk/releases/download/v1.204.0/snyk-linux
+#     - mv snyk-linux snyk && chmod +x snyk
+#     - ./snyk test --json > snyk-results.json
+#   artifacts:
+#     when: always
+#     paths:
+#     - snyk-results.json
+#   allow_failure: true
 
 
-devskim:
-    image: docker:latest
-    stage: Automated Code Review
+# devskim:
+#     image: docker:latest
+#     stage: Automated Code Review
     
-    script:
-      - docker run michelleamesquita/devskim analyze app.py
-    allow_failure: true
+#     script:
+#       - docker run michelleamesquita/devskim analyze app.py
+#     allow_failure: true
 
-trufflehog:
-   image: docker:latest
-   stage: Sensitive Information Scan
+# trufflehog:
+#    image: docker:latest
+#    stage: Sensitive Information Scan
 
-   script:
-     - docker run --rm -v "$(pwd):/proj" dxa4481/trufflehog .
-   allow_failure: true
+#    script:
+#      - docker run --rm -v "$(pwd):/proj" dxa4481/trufflehog .
+#    allow_failure: true
 
 
-dependencycheck:
-   stage: Source Composition Analysis
-   script:
-     - pip install safety
-     - safety check -r requirements.txt --json > safety-results.json 
-   artifacts:
-     paths: [safety-results.json]
-     when: always 
+# dependencycheck:
+#    stage: Source Composition Analysis
+#    script:
+#      - pip install safety
+#      - safety check -r requirements.txt --json > safety-results.json 
+#    artifacts:
+#      paths: [safety-results.json]
+#      when: always 
 
 
 owasp:

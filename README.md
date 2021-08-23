@@ -1,12 +1,13 @@
 ## DevSecOps & DevOps Repository
 
-Here, I've created this repository to show my Pipeline for each case.
+Here, I've created this repository to show our case.
 
 |**Index**
 |:---
 |[WebApplication](#webapplication)|
 |[DevSecOps](#devsecops)|
-|[DevOps](#devops)|
+|[Arquitecture](#arquitecture)|
+
 
 ## WebApplication
 
@@ -15,9 +16,9 @@ So, inside the WebApp, we have two routers that can be explore and see what can 
 Enjoy it. 😄
 
 
-<img src="/uploads/2cb66cb4db6f9f9627d244b588acae6d/Captura_de_Tela_2021-07-29_às_20.50.44.png"  width="450" height="200">
+<img src="/uploads/ecd9cd1cb8b8e01f6b48089618a67b92/image.png"  width="450" height="200">
 
-<img src="/uploads/94422cbad0523cdd67c8d4a60e6f5eb6/Captura_de_Tela_2021-07-29_às_20.51.00.png"  width="450" height="200">
+<img src="/uploads/40bf321a8cde80409532928d975cc364/image.png"  width="450" height="200">
 
 
 ## DevSecOps
@@ -38,7 +39,7 @@ You can create a image with Docker file too, using this:
 
 ```docker build -t myapp .```
 
-## DevOps
+## Arquitecture
 
-Here, I have a specfic folder - **test**- to put my test case, using Selenium and I also created a image for this environment to test in my local pipeline.
-I also have a Jenkins file inside, to create a pipeline and connect these stages: build, deploy and test (with selenium).
+<img src="/uploads/cff675b3ba8de6936832889976926e8e/image.png"  width="450" height="400">
+

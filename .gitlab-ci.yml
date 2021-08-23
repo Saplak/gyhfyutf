@@ -12,6 +12,48 @@ stages:
 
 services:
   - docker:dind 
+
+build:
+   image: docker:latest
+   stage: Build
+
+   script:
+      - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
+      - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
+      - "docker push ${CI_REGISTRY_USER}/simpleapp:latest"
+
+
+owasp:
+   image: docker:latest
+   stage: Dynamic Application Security Testing
+
+   script:
+     - echo 'hello!'
+     - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL2}
+   allow_failure: true
+
+
+
+deploy:
+  image: ubuntu:latest
+  stage: Deploy
+
+  script:
+     - 'echo "Building docker!"'
+     - apt-get update -qq
+     # Setup SSH deploy keys
+     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+     - eval $(ssh-agent -s)
+     - ssh-add <(echo "$SSH_PRIVATE_KEY")
+     - mkdir -p ~/.ssh
+     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  
+     - echo "Deploy project on server"
+     - ssh $DEPLOY_HOST "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
+     - ssh $DEPLOY_HOST "docker stop app3"
+     - ssh $DEPLOY_HOST "docker run --rm -d --name app3 -p $APP_PORT:$APP_PORT ${CI_REGISTRY_USER}/simpleapp:latest"
+
+
   
 # bandit:
 #   stage: Static Application Security Testing
@@ -37,23 +79,6 @@ services:
 #   allow_failure: true
 
 
-# devskim:
-#     image: docker:latest
-#     stage: Automated Code Review
-    
-#     script:
-#       - docker run michelleamesquita/devskim analyze app.py
-#     allow_failure: true
-
-# trufflehog:
-#    image: docker:latest
-#    stage: Sensitive Information Scan
-
-#    script:
-#      - docker run --rm -v "$(pwd):/proj" dxa4481/trufflehog .
-#    allow_failure: true
-
-
 # dependencycheck:
 #    stage: Source Composition Analysis
 #    script:
@@ -64,43 +89,6 @@ services:
 #      when: always 
 
 
-owasp:
-   image: docker:latest
-   stage: Dynamic Application Security Testing
-
-   script:
-     - echo 'hello!'
-     - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL2}
-   allow_failure: true
-
-
-build:
-   image: docker:latest
-   stage: Build
-
-   script:
-      - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
-      - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
-      - "docker push ${CI_REGISTRY_USER}/simpleapp:latest"
-
-deploy:
-  image: ubuntu:latest
-  stage: Deploy
-
-  script:
-     - 'echo "Building docker!"'
-     - apt-get update -qq
-     # Setup SSH deploy keys
-     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
-     - eval $(ssh-agent -s)
-     - ssh-add <(echo "$SSH_PRIVATE_KEY")
-     - mkdir -p ~/.ssh
-     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  
-     - echo "Deploy project on server"
-     - ssh $DEPLOY_HOST "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
-     - ssh $DEPLOY_HOST "docker stop app3"
-     - ssh $DEPLOY_HOST "docker run --rm -d --name app3 -p $APP_PORT:$APP_PORT ${CI_REGISTRY_USER}/simpleapp:latest"
 
    
    

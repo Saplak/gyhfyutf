@@ -1,4 +1,4 @@
-## DevSecOps
+## DevSecOps :)
 
 Here, I've created this repository to show our case.
 

@@ -50,6 +50,19 @@ deploy:
      - ssh $DEPLOY_HOST "docker stop app3"
      - ssh $DEPLOY_HOST "docker run --rm -d --name app3 -p $APP_PORT:$APP_PORT ${CI_REGISTRY_USER}/simpleapp:latest"
 
+include:
+  - template: Security/Container-Scanning.gitlab-ci.yml
+  #- template: Jobs/Build.gitlab-ci.yml  
+  #- template: Jobs/Code-Quality.gitlab-ci.yml  
+  #- template: Jobs/Deploy.gitlab-ci.yml  
+  #- template: Jobs/DAST-Default-Branch-Deploy.gitlab-ci.yml  
+  #- template: Jobs/Browser-Performance-Testing.gitlab-ci.yml  
+  #- template: Security/DAST.gitlab-ci.yml  
+  #- template: Security/Container-Scanning.gitlab-ci.yml  
+  #- template: Security/Dependency-Scanning.gitlab-ci.yml  
+  #- template: Security/License-Scanning.gitlab-ci.yml  
+  #- template: Security/SAST.gitlab-ci.yml  
+  #- template: Security/Secret-Detection.gitlab-ci.yml  
 
   
 # bandit:

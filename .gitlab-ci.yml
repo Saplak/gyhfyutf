@@ -15,12 +15,13 @@ build:
    image: docker:latest
    stage: Build
 
+   variables:
+    IMAGE: ${CI_REGISTRY_USER}/simpleapp:latest
+
    script:
       - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
       - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
       - "docker push ${CI_REGISTRY_USER}/simpleapp:latest"
-include:
-  - template: Security/Container-Scanning.gitlab-ci.yml
 
 
 owasp:
@@ -53,8 +54,8 @@ deploy:
      - ssh $DEPLOY_HOST "docker stop app3"
      - ssh $DEPLOY_HOST "docker run --rm -d --name app3 -p $APP_PORT:$APP_PORT ${CI_REGISTRY_USER}/simpleapp:latest"
 
-# include:
-#   - template: Security/Container-Scanning.gitlab-ci.yml
+include:
+  - template: Security/Container-Scanning.gitlab-ci.yml
   #- template: Jobs/Build.gitlab-ci.yml  
   #- template: Jobs/Code-Quality.gitlab-ci.yml  
   #- template: Jobs/Deploy.gitlab-ci.yml  

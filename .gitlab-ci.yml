@@ -3,7 +3,7 @@ image: python:latest
 stages:
  - Build
 #  - Static Application Security Testing
- - test
+#  - test
  - Dynamic Application Security Testing 
  - Deploy
 
@@ -22,8 +22,6 @@ build:
       - "docker build -t ${CI_REGISTRY_USER}/simpleapp:latest ."
       - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
       - "docker push ${CI_REGISTRY_USER}/simpleapp:latest"
-include:
-  - template: Security/Container-Scanning.gitlab-ci.yml
 
 
 

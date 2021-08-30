@@ -3,7 +3,7 @@ image: python:latest
 stages:
  - Build
 #  - Static Application Security Testing
-#  - test
+ - test
  - Dynamic Application Security Testing 
  - Deploy
 

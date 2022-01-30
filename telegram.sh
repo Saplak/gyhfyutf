@@ -7,7 +7,6 @@ BOT_URL="https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage"
 PARSE_MODE="Markdown"
 
 # echo "${CI_JOB_STATUS}"
-# Use built-in Travis variables to check if all previous steps passed:
 
 echo "${CI_JOB_STATUS}"
 

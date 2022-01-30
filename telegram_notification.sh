@@ -26,6 +26,6 @@ ${CI_COMMIT_MESSAGE}
 "
 
 curl -s -X POST ${BOT_URL} -d chat_id=$TELEGRAM_CHAT_ID \
-        -d text="$MESSAGE" -d parse_mode=${PARSE_MODE}
+        -d text=${MESSAGE} -d parse_mode=${PARSE_MODE}
 
 

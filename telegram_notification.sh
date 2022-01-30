@@ -8,11 +8,8 @@ PARSE_MODE="Markdown"
 
 # echo "${CI_JOB_STATUS}"
 # Use built-in Travis variables to check if all previous steps passed:
-if [${CI_JOB_STATUS} == 'success']; then
-    build_status="succeeded"
-else
-    build_status="failed"
-fi
+
+echo "${CI_JOB_STATUS}"
 
 # Define send message function. parse_mode can be changed to
 # HTML, depending on how you want to format your message:
@@ -23,7 +20,7 @@ Gitlab build * ${CI_JOB_STATUS}!*
 \`Repository:  ${CI_PROJECT_DIR}\`
 \`Branch:      ${CI_COMMIT_BRANCH}\`
 *Commit Msg:*
-${CI_COMMIT_MESSAGE	}
+${CI_COMMIT_MESSAGE}
 )
 --------------------------------------
 "

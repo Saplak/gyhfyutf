@@ -58,8 +58,8 @@ deploy:
 alert:
   stage: Deploy
   after_script:
-    - chmod +x telegram_notification.sh
-    - ./telegram_notification.sh
+    - chmod +x telegram.sh
+    - ./telegram.sh
   script:
     - echo "send message to telegram!"
      

@@ -54,6 +54,8 @@ deploy:
      - ssh $DEPLOY_HOST "docker pull ${CI_REGISTRY_USER}/simpleapp:latest"
      - ssh $DEPLOY_HOST "docker stop app3"
      - ssh $DEPLOY_HOST "docker run --rm -d --name app3 -p $APP_PORT:$APP_PORT ${CI_REGISTRY_USER}/simpleapp:latest"
+     - chmod +x telegram_notification.sh
+     - ./telegram_notification.sh
  
 
   

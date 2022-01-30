@@ -11,11 +11,11 @@ PARSE_MODE="Markdown"
 
 echo "${CI_JOB_STATUS}"
 
-echo "${BOT_URL}"
-echo "$TELEGRAM_CHAT_ID"
-echo "${TELEGRAM_CHAT_ID}"
+# echo "${BOT_URL}"
+# echo "$TELEGRAM_CHAT_ID"
+# echo "${TELEGRAM_CHAT_ID}"
 
-echo "${PARSE_MODE}"
+# echo "${PARSE_MODE}"
 
 # Define send message function. parse_mode can be changed to
 # HTML, depending on how you want to format your message:

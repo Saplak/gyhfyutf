@@ -14,7 +14,7 @@ echo "${CI_JOB_STATUS}"
 echo "${BOT_URL}"
 echo "$TELEGRAM_CHAT_ID"
 echo "${TELEGRAM_CHAT_ID}"
-echo "${MESSAGE}"
+
 echo "${PARSE_MODE}"
 
 # Define send message function. parse_mode can be changed to
@@ -30,6 +30,9 @@ ${CI_COMMIT_MESSAGE}
 )
 --------------------------------------
 "
+
+echo "${MESSAGE}"
+echo "$MESSAGE"
 
 curl -s -X POST ${BOT_URL} -d chat_id=$TELEGRAM_CHAT_ID -d text="${MESSAGE}" -d parse_mode=${PARSE_MODE}
 

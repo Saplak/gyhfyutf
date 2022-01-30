@@ -6,8 +6,9 @@ BOT_URL="https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage"
 # Set formatting for the message. Can be either "Markdown" or "HTML"
 PARSE_MODE="Markdown"
 
+echo "${CI_JOB_STATUS}"
 # Use built-in Travis variables to check if all previous steps passed:
-if [ $CI_JOB_STATUS == 'success']; then
+if [ ${CI_JOB_STATUS} == 'success']; then
     build_status="succeeded"
 else
     build_status="failed"
@@ -25,7 +26,7 @@ send_msg () {
 # characters, since they're reserved in bash
 send_msg "
 -------------------------------------
-Travis build * {$CI_JOB_STATUS}!*
+Travis build * ${CI_JOB_STATUS}!*
 \`Repository:  ${CI_PROJECT_DIR}\`
 \`Branch:      ${CI_COMMIT_BRANCH}\`
 *Commit Msg:*

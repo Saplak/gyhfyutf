@@ -17,8 +17,7 @@ fi
 # Define send message function. parse_mode can be changed to
 # HTML, depending on how you want to format your message:
 
-curl -s -X POST ${BOT_URL} -d chat_id=$TELEGRAM_CHAT_ID \
-        -d text="
+MESSAGE="
 -------------------------------------
 Gitlab build * ${CI_JOB_STATUS}!*
 \`Repository:  ${CI_PROJECT_DIR}\`
@@ -27,6 +26,9 @@ Gitlab build * ${CI_JOB_STATUS}!*
 ${CI_COMMIT_MESSAGE	}
 )
 --------------------------------------
-" -d parse_mode=${PARSE_MODE}
+"
+
+curl -s -X POST ${BOT_URL} -d chat_id=$TELEGRAM_CHAT_ID \
+        -d text="$MESSAGE" -d parse_mode=${PARSE_MODE}
 
 

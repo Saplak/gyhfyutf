@@ -1,4 +1,4 @@
-## DevSecOps :)  - case 
+## DevSecOps :)  - case  
  
 Here, I've created this repository to show our case.
 

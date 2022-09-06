@@ -63,8 +63,7 @@ alert:
   script:
     - echo "send message to telegram!"
      
-include:
-  - template: Security/Dependency-Scanning.gitlab-ci.yml
+
  
 
   

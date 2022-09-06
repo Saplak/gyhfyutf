@@ -31,10 +31,12 @@ owasp:
 
    script:
      - echo 'hello!'
-     - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL2} -J report-api.json
-     - cp /zap/wrk/report-api.json report-api.json
+     - mkdir -p /zap/wrk
+     - cd zap
+     - docker run -v $PWD/wrk/:/zap/wrk -t owasp/zap2docker-stable zap-baseline.py -t ${URL2} -J report_json
+     - cp /zap/wrk/report-api.json report_json.json
    artifacts:
-     paths: [report-api.json]
+     paths: [report_json.json]
    allow_failure: true
 
 

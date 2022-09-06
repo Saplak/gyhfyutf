@@ -32,6 +32,7 @@ owasp:
    script:
      - echo 'hello!'
      - mkdir -p zap/wrk
+     - chmod +x zap/wrk
      - cd zap
      - docker run -v $PWD/wrk/:/zap/wrk -t owasp/zap2docker-stable zap-baseline.py -t ${URL2} -J report_json
      - cp /zap/wrk/report-api.json report_json.json

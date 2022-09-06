@@ -32,11 +32,12 @@ owasp:
    before_script:
     - mkdir -p /zap/wrk
     - chmod +x /zap/wrk
-    - cd zap
+    
 
    script:
      - echo 'hello!'
-     - docker run -v $PWD/wrk/:/zap/wrk -t owasp/zap2docker-stable zap-baseline.py -t ${URL2} -J report_json
+     - ls
+     - docker run -v $PWD/zap/wrk/:/zap/wrk -t owasp/zap2docker-stable zap-baseline.py -t ${URL2} -J report_json
      - cp /zap/wrk/report-api.json report_json.json
    artifacts:
      paths: [report_json.json]

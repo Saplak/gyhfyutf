@@ -31,7 +31,7 @@ owasp:
 
    before_script:
     - mkdir -p /zap/wrk
-    - chmod +x zap/wrk
+    - chmod +x /zap/wrk
     - cd zap
 
    script:

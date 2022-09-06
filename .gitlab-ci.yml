@@ -31,7 +31,9 @@ owasp:
 
    script:
      - echo 'hello!'
-     - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL2}
+     - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL2} -J report-api.json
+   artifacts:
+     paths: [report-api.json]
    allow_failure: true
 
 

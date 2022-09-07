@@ -86,13 +86,28 @@ bandit:
     paths: [bandit-output.json]
   allow_failure: true
 
+# snyk:
+#   stage: Static Application Security Testing
+#   script:
+#     - pip install -r requirements.txt
+#     - wget https://github.com/snyk/snyk/releases/download/v1.204.0/snyk-linux
+#     - mv snyk-linux snyk && chmod +x snyk
+#     - ./snyk test --json > snyk-results.json
+#   artifacts:
+#     when: always
+#     paths:
+#     - snyk-results.json
+#   allow_failure: true
+
 snyk:
   stage: Static Application Security Testing
   script:
     - pip install -r requirements.txt
-    - wget https://github.com/snyk/snyk/releases/download/v1.204.0/snyk-linux
-    - mv snyk-linux snyk && chmod +x snyk
-    - ./snyk test --json > snyk-results.json
+    - curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
+    - chmod +x ./snyk
+    - mv ./snyk /usr/local/bin/
+    - snyk auth ${SNYK2_TOKEN}
+    - snyk test --json snyk-results.json
   artifacts:
     when: always
     paths:

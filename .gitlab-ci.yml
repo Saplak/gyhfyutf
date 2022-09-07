@@ -103,11 +103,10 @@ snyk:
   stage: Static Application Security Testing
   script:
     - pip install -r requirements.txt
-    - curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
-    - chmod +x ./snyk
-    - mv ./snyk /usr/local/bin/
+    - curl https://static.snyk.io/cli/latest/snyk-linux 
+    - mv snyk-linux snyk && chmod +x snyk
     - snyk auth ${SNYK2_TOKEN}
-    - snyk test --json snyk-results.json
+    - snyk test --json > snyk-results.json
   artifacts:
     when: always
     paths:

@@ -11,9 +11,6 @@ stages:
 services:
   - docker:dind 
 
-volumes:
-  - ./zap/wrk/:/zap/wrk/
-
  
   
 
@@ -39,7 +36,7 @@ owasp:
    script:
      - echo 'hello!'
      - ls
-     - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL2} -J report_json
+     - docker run --volume "$(pwd)/zap/wrk/":"/zap/wrk/" -t owasp/zap2docker-stable zap-baseline.py -t ${URL2} -J report_json
      - cp /zap/wrk/report-api.json report_json.json
    artifacts:
      paths: [report_json.json]

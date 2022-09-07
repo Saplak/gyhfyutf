@@ -2,9 +2,9 @@ image: python:latest
 
 stages:
  - Build
+ - Source Composition Analysis
  - Static Application Security Testing
  - Dynamic Application Security Testing 
- - Source Composition Analysis
  - Deploy
 
 
@@ -80,9 +80,10 @@ bandit:
   script:
     - pip install -r requirements.txt
     - pip install bandit
-    - 'bandit -r app.py'
+    - 'bandit -r app.py -f json -o bandit-output.json'
   artifacts:
-    paths: [bandit-output.txt]
+    when: always
+    paths: [bandit-output.json]
   allow_failure: true
 
 snyk:

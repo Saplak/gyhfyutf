@@ -10,6 +10,8 @@ stages:
 
 services:
   - docker:dind 
+  volumes:
+      - ./zap/wrk:/zap/wrk
   
 
 build:
@@ -29,8 +31,7 @@ build:
 owasp:
    image: docker:latest
    stage: Dynamic Application Security Testing
-   volumes:
-      - ./zap/wrk:/zap/wrk
+   
 
    script:
      - echo 'hello!'

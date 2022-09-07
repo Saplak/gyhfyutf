@@ -12,7 +12,7 @@ services:
   - docker:dind 
 
 volumes:
-- ./zap/wrk/:/zap/wrk/
+  - ./zap/wrk/:/zap/wrk/
 
  
   

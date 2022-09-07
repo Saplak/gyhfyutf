@@ -10,6 +10,7 @@ stages:
 
 services:
   - docker:dind 
+  
 
 build:
    image: docker:latest
@@ -28,16 +29,13 @@ build:
 owasp:
    image: docker:latest
    stage: Dynamic Application Security Testing
-
-   before_script:
-    - mkdir -p /zap/wrk
-    - chmod +x /zap/wrk
-    
+   volumes:
+      - ./zap/wrk:/zap/wrk
 
    script:
      - echo 'hello!'
      - ls
-     - docker run -v $PWD/zap/wrk/:/zap/wrk -t owasp/zap2docker-stable zap-baseline.py -t ${URL2} -J report_json
+     - docker run -t owasp/zap2docker-stable zap-baseline.py -t ${URL2} -J report_json
      - cp /zap/wrk/report-api.json report_json.json
    artifacts:
      paths: [report_json.json]

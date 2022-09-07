@@ -9,7 +9,7 @@ stages:
 
 
 services:
-  - docker:dind 
+  # - docker:dind 
   owasp:
     volumes:
       - ./zap/wrk:/zap/wrk

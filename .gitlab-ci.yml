@@ -11,8 +11,8 @@ stages:
 services:
   # - docker:dind 
   - name: docker:dind
-      volumes:
-        - ./zap/wrk/:/zap/wrk/
+    volumes:
+      - ./zap/wrk/:/zap/wrk/
 
  
   
